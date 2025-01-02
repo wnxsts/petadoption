@@ -1,25 +1,18 @@
-// Class representing a Pet
-public class Pet {
-    private String name;
-    private String type; // e.g., Dog, Cat, Rabbit
-    private int age; // Age of the pet
-    private boolean isAdopted; // Adoption status
+import java.util.Objects;
 
-    // Constructor
-    public Pet(String name, String type, int age, boolean isAdopted) {
+public abstract class Pet {
+    private String name;
+    private int age;
+    private boolean isAdopted;
+
+    public Pet(String name, int age) {
         this.name = name;
-        this.type = type;
         this.age = age;
-        this.isAdopted = isAdopted;
+        this.isAdopted = false;
     }
 
-    // Getters
     public String getName() {
         return name;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public int getAge() {
@@ -30,34 +23,27 @@ public class Pet {
         return isAdopted;
     }
 
-    // Setters
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
     public void setAdopted(boolean adopted) {
-        this.isAdopted = adopted;
+        isAdopted = adopted;
     }
 
-    // Method to display Pet information
-    public void displayInfo() {
-        System.out.println("Pet Name: " + name);
-        System.out.println("Type: " + type);
-        System.out.println("Age: " + age + " years");
-        System.out.println("Adopted: " + (isAdopted ? "Yes" : "No"));
-    }
+    public abstract String getType();
 
-    // Overriding the toString() method for clean output
     @Override
     public String toString() {
-        return "Pet{name='" + name + "', type='" + type + "', age=" + age + ", adopted=" + isAdopted + "}";
+        return getType() + " по имени " + name + ", возраст " + age + " года, усыновлен: " + (isAdopted ? "Да" : "Нет");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pet pet = (Pet) o;
+        return age == pet.age && Objects.equals(name, pet.name) && Objects.equals(getType(), pet.getType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age, getType());
     }
 }

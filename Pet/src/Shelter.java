@@ -1,37 +1,44 @@
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Shelter {
     private String name;
     private String address;
-    private ArrayList<Pet> pets; // Список питомцев
+    private List<Pet> pets;
 
-    // Конструктор
     public Shelter(String name, String address) {
         this.name = name;
         this.address = address;
-        this.pets = new ArrayList<>(); // Инициализация списка
+        this.pets = new ArrayList<>();
     }
 
-    // Метод для добавления питомца
     public void addPet(Pet pet) {
         pets.add(pet);
+        System.out.println(pet.getName() + " добавлен в приют.");
     }
 
-    // Метод для отображения всех питомцев
     public void displayAllPets() {
-        System.out.println("Pets in Shelter " + name + ":");
         for (Pet pet : pets) {
-            pet.displayInfo();
+            System.out.println(pet);
         }
     }
 
-    // Метод для усыновления питомца
     public void adoptPet(Pet pet, Adopter adopter) {
-        if (!pet.isAdopted()) {
-            pet.setAdopted(true);
-            System.out.println(adopter.getName() + " adopted " + pet.getName());
+        if (pet.isAdopted()) {
+            System.out.println("Питомец " + pet.getName() + " уже усыновлен.");
         } else {
-            System.out.println(pet.getName() + " is already adopted.");
+            pet.setAdopted(true);
+            System.out.println(adopter.getName() + " усыновил питомца " + pet.getName() + ".");
         }
+    }
+
+    public List<Pet> filterByType(String type) {
+        return pets.stream().filter(pet -> pet.getType().equalsIgnoreCase(type)).collect(Collectors.toList());
+    }
+
+    public void sortPetsByAge() {
+        pets.sort(Comparator.comparingInt(Pet::getAge));
     }
 }
